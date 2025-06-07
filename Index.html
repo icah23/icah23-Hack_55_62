@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluasi Hack V2</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        h1 {
+            margin-top: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff;
+            }
+            to {
+                text-shadow: 0 0 15px #fff, 0 0 20px #ff4da6;
+            }
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        #resetBtn {
+            background-color: #f39c12;
+        }
+        
+        #daftarBtn {
+            background-color: #3498db;
+        }
+        
+        #sawerBtn {
+            background-color: #e74c3c;
+        }
+        
+        .result {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+            font-size: 28px;
+        }
+        
+        .besar {
+            background-color: rgba(231, 76, 60, 0.7);
+            color: white;
+            animation: besarPulse 1.5s infinite;
+        }
+        
+        .kecil {
+            background-color: rgba(46, 204, 113, 0.7);
+            color: white;
+            animation: kecilPulse 1.5s infinite;
+        }
+        
+        .history {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .win {
+            color: #2ecc71;
+        }
+        
+        .lose {
+            color: #e74c3c;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: fall 5s linear infinite;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Animasi Modern */
+        @keyframes besarPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        
+        @keyframes kecilPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .active-script {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 255, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            animation: blink 1s infinite alternate;
+        }
+        
+        .expired-notice {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            animation: blink 1s infinite alternate;
+        }
+        
+        @keyframes blink {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+        
+        /* New styles for Win/Lose counter */
+        .counter-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .counter-item {
+            text-align: center;
+        }
+        
+        .counter-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        /* New animation for Hitung button */
+        @keyframes hitungAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .hitung-animation {
+            animation: hitungAnimation 0.5s ease-out;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+    </style>
+</head>
+<body>
+    <!-- Expired Banner -->
+    <div id="expiredBanner" class="expired-banner"><br>
+        <a href="https://wa.me/6282267722152" class="whatsapp-btn" target="_blank">
+            WhatsApp
+        </a>
+    </div>
+
+    <div class="container">
+        <div id="scriptStatus" class="active-script">AKTIF</div>
+        <h1>55five & 62club Prediksi</h1>
+        
+        <input type="text" id="inputNumber" maxlength="4" placeholder="Masukkan 4 Hasil Akhir Dari Bawah">
+        
+        <div class="counter-container">
+            <div class="counter-item">
+                <div>Win</div>
+                <div id="winCounter" class="counter-value">0</div>
+            </div>
+            <div class="counter-item">
+                <div>Lose</div>
+                <div id="loseCounter" class="counter-value">0</div>
+            </div>
+            <div class="counter-item">
+                <div>Total</div>
+                <div id="totalCounter" class="counter-value">0</div>
+            </div>
+        </div>
+        
+        <div id="result" class="result"></div>
+        
+        <button id="hitungBtn">Predictor</button>
+        <button id="resetBtn">Reset</button>
+        <button id="daftarBtn">🎉Daftar</button>
+        <button id="sawerBtn">🧧Sawer</button>
+        
+        <div class="history">
+            <h3>Riwayat Prediksi</h3>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Masa aktif script (30 hari dari sekarang)
+        const expirationDate = new Date("2025-06-08");
+        
+        const scriptStatus = document.getElementById('scriptStatus');
+        const expiredBanner = document.getElementById('expiredBanner');
+        const currentDate = new Date();
+        
+        if (currentDate > expirationDate) {
+            scriptStatus.textContent = 'EXPIRED';
+            scriptStatus.className = 'expired-notice';
+            document.getElementById('hitungBtn').disabled = true;
+            document.getElementById('resetBtn').disabled = true;
+            expiredBanner.style.display = 'block';
+        } else {
+            const daysLeft = Math.floor((expirationDate - currentDate) / (1000 * 60 * 60 * 24));
+            scriptStatus.textContent = `AKTIF (${daysLeft} hari)`;
+        }
+
+        const inputNumber = document.getElementById('inputNumber');
+        const hitungBtn = document.getElementById('hitungBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const daftarBtn = document.getElementById('daftarBtn');
+        const sawerBtn = document.getElementById('sawerBtn');
+        const resultDiv = document.getElementById('result');
+        const historyList = document.getElementById('historyList');
+        const winCounter = document.getElementById('winCounter');
+        const loseCounter = document.getElementById('loseCounter');
+        const totalCounter = document.getElementById('totalCounter');
+        
+        let lastResult = null;
+        let predictionHistory = [];
+        let winCount = 0;
+        let loseCount = 0;
+        let totalCount = 0;
+        
+        hitungBtn.addEventListener('click', calculate);
+        resetBtn.addEventListener('click', reset);
+        daftarBtn.addEventListener('click', () => window.open('https://55d8krb.com/#/register?invitationCode=618741674553'));
+        sawerBtn.addEventListener('click', () => window.open('https://saweria.co/Bangchal07'));
+        
+        inputNumber.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+        
+        function calculate() {
+            // Add animation to Hitung button
+            hitungBtn.classList.add('hitung-animation');
+            setTimeout(() => {
+                hitungBtn.classList.remove('hitung-animation');
+            }, 500);
+            
+            const numbers = inputNumber.value;
+            
+            if (numbers.length !== 4 || !/^\d+$/.test(numbers)) {
+                alert('Masukkan tepat 4 angka!');
+                return;
+            }
+            
+            const digits = numbers.split('').map(Number);
+            const sum = digits.reduce((a, b) => a + b, 0);
+            
+            let resultClass, resultText;
+            if (sum >= 20) {
+                resultClass = 'besar';
+                resultText = 'BESAR';
+            } else {
+                resultClass = 'kecil';
+                resultText = 'KECIL';
+            }
+            
+            // Cek prediksi jika sudah ada input sebelumnya
+            if (lastResult !== null) {
+                const lastDigit = digits[3]; // Ambil digit ke-4
+                let currentPrediction = (lastDigit >= 5) ? 'BESAR' : 'KECIL';
+                let isWin = (lastResult.result === currentPrediction);
+                
+                // Update counters
+                if (isWin) {
+                    winCount++;
+                } else {
+                    loseCount++;
+                }
+                totalCount++;
+                
+                // Update counter display
+                winCounter.textContent = winCount;
+                loseCounter.textContent = loseCount;
+                totalCounter.textContent = totalCount;
+                
+                // Tambahkan ke riwayat
+                predictionHistory.unshift({
+                    previous: lastResult.input,
+                    current: numbers,
+                    lastDigit: lastDigit,
+                    prediction: currentPrediction,
+                    result: isWin ? 'Win' : 'Lose',
+                    timestamp: new Date()
+                });
+                
+                updateHistory();
+                
+                if (isWin) {
+                    createConfetti();
+                }
+            }
+            
+            // Simpan hasil terakhir
+            lastResult = {
+                input: numbers,
+                sum: sum,
+                result: resultText
+            };
+            
+            // Tampilkan hasil dengan animasi
+            resultDiv.textContent = resultText;
+            resultDiv.className = 'result ' + resultClass;
+            resultDiv.style.animation = 'slideIn 0.5s';
+            
+            // Reset input
+            inputNumber.value = '';
+        }
+        
+        function reset() {
+            lastResult = null;
+            predictionHistory = [];
+            winCount = 0;
+            loseCount = 0;
+            totalCount = 0;
+            winCounter.textContent = '0';
+            loseCounter.textContent = '0';
+            totalCounter.textContent = '0';
+            resultDiv.textContent = '';
+            resultDiv.className = 'result';
+            historyList.innerHTML = '';
+            inputNumber.value = '';
+        }
+        
+        function updateHistory() {
+            historyList.innerHTML = '';
+            predictionHistory.slice(0, 10).forEach(item => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <p>
+                        ${item.previous} → ${item.current} | 
+                        Digit ke-4: ${item.lastDigit} (${item.prediction}) | 
+                        <span class="${item.result.toLowerCase()}">${item.result}</span> |
+                        ${item.timestamp.toLocaleTimeString()}
+                    </p>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+        
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                const size = Math.random() * 10 + 5;
+                const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 3 + 2;
+                
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.backgroundColor = color;
+                confetti.style.left = `${left}%`;
+                confetti.style.animationDuration = `${animationDuration}s`;
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, animationDuration * 1000);
+            }
+        }
+    </script>
+</body>
+</html>
