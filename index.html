@@ -1,464 +1,353 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluasi Hack V2</title>
+    <title>PredictorX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: white;
-            text-align: center;
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+            --danger: #e63946;
+            --success: #2a9d8f;
+        }
+        
+        * {
             margin: 0;
-            padding: 20px;
-            height: 100vh;
-            overflow: hidden;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: url('1000004040.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--dark);
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         .container {
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 400px;
+            max-width: 800px;
             margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            background: yellow;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 2rem;
             position: relative;
         }
         
-        h1 {
-            margin-top: 0;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: glow 2s infinite alternate;
+        .floating-status {
+            position: absolute;
+            top: 15px; /* Diperbaiki: turunkan sedikit dari atas */
+            right: 20px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: float 3s ease-in-out infinite;
+            z-index: 10;
+            backdrop-filter: blur(5px); /* Efek glassmorphism */
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #fff;
-            }
-            to {
-                text-shadow: 0 0 15px #fff, 0 0 20px #ff4da6;
-            }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        /* CSS sebelumnya tetap sama (tidak diubah) */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
         }
         
         input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             font-size: 16px;
-            margin: 10px 5px;
-            cursor: pointer;
-            border-radius: 5px;
             transition: all 0.3s;
         }
         
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
         }
         
-        #resetBtn {
-            background-color: #f39c12;
-        }
-        
-        #daftarBtn {
-            background-color: #3498db;
-        }
-        
-        #sawerBtn {
-            background-color: #e74c3c;
-        }
-        
-        .result {
-            font-size: 24px;
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 5px;
-            position: relative;
-            overflow: hidden;
-            font-weight: bold;
-            font-size: 28px;
-        }
-        
-        .besar {
-            background-color: rgba(231, 76, 60, 0.7);
-            color: white;
-            animation: besarPulse 1.5s infinite;
-        }
-        
-        .kecil {
-            background-color: rgba(46, 204, 113, 0.7);
-            color: white;
-            animation: kecilPulse 1.5s infinite;
-        }
-        
-        .history {
-            margin-top: 20px;
-            max-height: 150px;
-            overflow-y: auto;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            padding: 10px;
-        }
-        
-        .win {
-            color: #2ecc71;
-        }
-        
-        .lose {
-            color: #e74c3c;
-        }
-        
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            border-radius: 50%;
-            animation: fall 5s linear infinite;
-        }
-        
-        @keyframes fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        /* Animasi Modern */
-        @keyframes besarPulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
-        }
-        
-        @keyframes kecilPulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .active-script {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(0, 255, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            animation: blink 1s infinite alternate;
-        }
-        
-        .expired-notice {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 0, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            animation: blink 1s infinite alternate;
-        }
-        
-        @keyframes blink {
-            from { opacity: 0.5; }
-            to { opacity: 1; }
-        }
-        
-        /* New styles for Win/Lose counter */
-        .counter-container {
+        .button-group {
             display: flex;
-            justify-content: space-around;
-            margin: 15px 0;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 10px;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
         }
         
-        .counter-item {
-            text-align: center;
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
-        .counter-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin-top: 5px;
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            flex: 1;
         }
         
-        /* New animation for Hitung button */
-        @keyframes hitungAnimation {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .btn-primary:hover {
+            background-color: var(--secondary);
         }
         
-        .hitung-animation {
-            animation: hitungAnimation 0.5s ease-out;
+        .btn-secondary {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid #ddd;
         }
         
-        .whatsapp-btn {
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-whatsapp {
             background-color: #25D366;
             color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            cursor: pointer;
-            display: inline-block;
-            text-decoration: none;
         }
         
-        .whatsapp-btn:hover {
-            background-color: #128C7E;
+        #result {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 18px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .result-besar {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            border-left: 5px solid var(--primary);
+        }
+        
+        .result-kecil {
+            background-color: rgba(233, 196, 106, 0.2);
+            color: #d4a017;
+            border-left: 5px solid #d4a017;
+        }
+        
+        .expiry-info {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Expired Banner -->
-    <div id="expiredBanner" class="expired-banner"><br>
-        <a href="https://wa.me/6282267722152" class="whatsapp-btn" target="_blank">
-            WhatsApp
-        </a>
-    </div>
-
     <div class="container">
-        <div id="scriptStatus" class="active-script">AKTIF</div>
-        <h1>55five & 62club Prediksi</h1>
+        <!-- Floating Status Indicator -->
+        <div id="floatingStatus" class="floating-status"></div>
         
-        <input type="text" id="inputNumber" maxlength="4" placeholder="Masukkan 4 Hasil Akhir Dari Bawah">
+        <header>
+            <h1>Prediksi BESAR/KECIL</h1>
+            <p class="subtitle"></p>
+        </header>
         
-        <div class="counter-container">
-            <div class="counter-item">
-                <div>Win</div>
-                <div id="winCounter" class="counter-value">0</div>
-            </div>
-            <div class="counter-item">
-                <div>Lose</div>
-                <div id="loseCounter" class="counter-value">0</div>
-            </div>
-            <div class="counter-item">
-                <div>Total</div>
-                <div id="totalCounter" class="counter-value">0</div>
-            </div>
+        <div class="input-group">
+            <label for="dataInput">Masukkan 4 hasil akhir<br>Sebelum menggunakan. Analisa dulu<br>apk Analisa Ada sama Admin<br>Free Kok</label>
+            <input type="text" id="dataInput" maxlength="4" pattern="\d{4}" 
+                   title="Masukkan tepat 4 digit angka" placeholder="Contoh: 1234">
         </div>
         
-        <div id="result" class="result"></div>
-        
-        <button id="hitungBtn">Predictor</button>
-        <button id="resetBtn">Reset</button>
-        <button id="daftarBtn">🎉Daftar</button>
-        <button id="sawerBtn">🧧Sawer</button>
-        
-        <div class="history">
-            <h3>Riwayat Prediksi</h3>
-            <div id="historyList"></div>
+        <div class="button-group">
+            <button class="btn-primary" onclick="prediksi()">
+                <i class="fas fa-calculator"></i> Prediksi
+            </button>
+            <button class="btn-secondary" onclick="resetForm()">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+            <button class="btn-success" onclick="showDaftar()">
+                <i class="fas fa-list"></i> Daftar
+            </button>
+            <button class="btn-danger" onclick="showSawer()">
+                <i class="fas fa-donate"></i> Sawer
+            </button>
+            <button class="btn-whatsapp" onclick="openWhatsApp()">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
         </div>
+        
+        <div id="result"></div>
+        
+        <div class="expiry-info">
+            <div id="expiryStatus"></div>
+        </div>
+        
+        <footer>
+            <p>© 2025 Prediksi Angka. Semua prediksi hanya untuk hiburan.</p>
+        </footer>
     </div>
 
     <script>
-        // Masa aktif script (30 hari dari sekarang)
-        const expirationDate = new Date("2025-06-09T23:00:00");
+        // Masa aktif di-set manual di sini (format: YYYY-MM-DDTHH:MM)
+        const EXPIRY_DATE = new Date("2025-06-13T23:00"); // <-- UBAH TANGGAL DI SINI
         
-        const scriptStatus = document.getElementById('scriptStatus');
-        const expiredBanner = document.getElementById('expiredBanner');
-        const currentDate = new Date();
-        
-        if (currentDate > expirationDate) {
-            scriptStatus.textContent = 'EXPIRED';
-            scriptStatus.className = 'expired-notice';
-            document.getElementById('hitungBtn').disabled = true;
-            document.getElementById('resetBtn').disabled = true;
-            expiredBanner.style.display = 'block';
-        } else {
-            const daysLeft = Math.floor((expirationDate - currentDate) / (1000 * 60 * 60 * 24));
-            scriptStatus.textContent = `AKTIF (${daysLeft} hari)`;
-        }
-
-        const inputNumber = document.getElementById('inputNumber');
-        const hitungBtn = document.getElementById('hitungBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const daftarBtn = document.getElementById('daftarBtn');
-        const sawerBtn = document.getElementById('sawerBtn');
-        const resultDiv = document.getElementById('result');
-        const historyList = document.getElementById('historyList');
-        const winCounter = document.getElementById('winCounter');
-        const loseCounter = document.getElementById('loseCounter');
-        const totalCounter = document.getElementById('totalCounter');
-        
-        let lastResult = null;
-        let predictionHistory = [];
-        let winCount = 0;
-        let loseCount = 0;
-        let totalCount = 0;
-        
-        hitungBtn.addEventListener('click', calculate);
-        resetBtn.addEventListener('click', reset);
-        daftarBtn.addEventListener('click', () => window.open('https://55d8krb.com/#/register?invitationCode=618741674553'));
-        sawerBtn.addEventListener('click', () => window.open('https://saweria.co/Bangchal07'));
-        
-        inputNumber.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculate();
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            checkExpiry();
+            setInterval(checkExpiry, 60000); // Cek setiap 1 menit
         });
-        
-        function calculate() {
-            // Add animation to Hitung button
-            hitungBtn.classList.add('hitung-animation');
-            setTimeout(() => {
-                hitungBtn.classList.remove('hitung-animation');
-            }, 500);
+
+        function prediksi() {
+            const input = document.getElementById('dataInput').value.trim();
+            const resultDiv = document.getElementById('result');
             
-            const numbers = inputNumber.value;
-            
-            if (numbers.length !== 4 || !/^\d+$/.test(numbers)) {
-                alert('Masukkan tepat 4 angka!');
+            if (!/^\d{4}$/.test(input)) {
+                resultDiv.textContent = 'Input harus tepat 4 digit angka!';
+                resultDiv.style.display = 'block';
+                resultDiv.className = '';
                 return;
             }
             
-            const digits = numbers.split('').map(Number);
-            const sum = digits.reduce((a, b) => a + b, 0);
+            const digits = input.split('').map(d => parseInt(d, 10));
+            const total = digits.reduce((a, b) => a + b, 0);
+            const modResult = total % 10;
+            const prediksi = modResult > 4 ? 'BESAR' : 'KECIL';
             
-            let resultClass, resultText;
-            if (sum >= 20) {
-                resultClass = 'besar';
-                resultText = 'BESAR';
+            resultDiv.textContent = `Hasil: ${prediksi}`;
+            resultDiv.style.display = 'block';
+            resultDiv.className = prediksi === 'BESAR' ? 'result-besar' : 'result-kecil';
+        }
+
+        function resetForm() {
+            document.getElementById('dataInput').value = '';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function showDaftar() {
+            window.open('https://55d8krb.com/#/register?invitationCode=618741674553');
+        }
+
+        function showSawer() {
+            window.open('https://saweria.co/Bangchal07');
+        }
+
+        function openWhatsApp() {
+            const phone = '6281234567890';
+            const message = 'Halo, saya tertarik dengan prediksi angka ini.';
+            window.open(`https://wa.me/${082267722152}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function checkExpiry() {
+            const now = new Date();
+            const floatingStatus = document.getElementById('floatingStatus');
+            const expiryStatus = document.getElementById('expiryStatus');
+            
+            if (now > EXPIRY_DATE) {
+                floatingStatus.textContent = 'EXPIRED';
+                floatingStatus.style.background = 'var(--danger)';
+                floatingStatus.style.color = 'white';
+                
+                expiryStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Masa aktif script telah berakhir!';
+                expiryStatus.style.color = 'var(--danger)';
+                disableFeatures();
             } else {
-                resultClass = 'kecil';
-                resultText = 'KECIL';
+                floatingStatus.textContent = 'AKTIF';
+                floatingStatus.style.background = 'var(--success)';
+                floatingStatus.style.color = 'white';
+                
+                const diffDays = Math.floor((EXPIRY_DATE - now) / (1000 * 60 * 60 * 24));
+                expiryStatus.innerHTML = `<i class="fas fa-check-circle"></i>${EXPIRY_DATE.toLocaleDateString()} (${diffDays} hari lagi)`;
+                expiryStatus.style.color = 'var(--success)';
             }
-            
-            // Cek prediksi jika sudah ada input sebelumnya
-            if (lastResult !== null) {
-                const lastDigit = digits[3]; // Ambil digit ke-4
-                let currentPrediction = (lastDigit >= 5) ? 'BESAR' : 'KECIL';
-                let isWin = (lastResult.result === currentPrediction);
-                
-                // Update counters
-                if (isWin) {
-                    winCount++;
-                } else {
-                    loseCount++;
-                }
-                totalCount++;
-                
-                // Update counter display
-                winCounter.textContent = winCount;
-                loseCounter.textContent = loseCount;
-                totalCounter.textContent = totalCount;
-                
-                // Tambahkan ke riwayat
-                predictionHistory.unshift({
-                    previous: lastResult.input,
-                    current: numbers,
-                    lastDigit: lastDigit,
-                    prediction: currentPrediction,
-                    result: isWin ? 'Win' : 'Lose',
-                    timestamp: new Date()
-                });
-                
-                updateHistory();
-                
-                if (isWin) {
-                    createConfetti();
-                }
-            }
-            
-            // Simpan hasil terakhir
-            lastResult = {
-                input: numbers,
-                sum: sum,
-                result: resultText
-            };
-            
-            // Tampilkan hasil dengan animasi
-            resultDiv.textContent = resultText;
-            resultDiv.className = 'result ' + resultClass;
-            resultDiv.style.animation = 'slideIn 0.5s';
-            
-            // Reset input
-            inputNumber.value = '';
         }
-        
-        function reset() {
-            lastResult = null;
-            predictionHistory = [];
-            winCount = 0;
-            loseCount = 0;
-            totalCount = 0;
-            winCounter.textContent = '0';
-            loseCounter.textContent = '0';
-            totalCounter.textContent = '0';
-            resultDiv.textContent = '';
-            resultDiv.className = 'result';
-            historyList.innerHTML = '';
-            inputNumber.value = '';
-        }
-        
-        function updateHistory() {
-            historyList.innerHTML = '';
-            predictionHistory.slice(0, 10).forEach(item => {
-                const div = document.createElement('div');
-                div.innerHTML = `
-                    <p>
-                        ${item.previous} → ${item.current} | 
-                        Digit ke-4: ${item.lastDigit} (${item.prediction}) | 
-                        <span class="${item.result.toLowerCase()}">${item.result}</span> |
-                        ${item.timestamp.toLocaleTimeString()}
-                    </p>
-                `;
-                historyList.appendChild(div);
+
+        function disableFeatures() {
+            document.querySelectorAll('button:not(.btn-secondary)').forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'not-allowed';
             });
-        }
-        
-        function createConfetti() {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                
-                const size = Math.random() * 10 + 5;
-                const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                const left = Math.random() * 100;
-                const animationDuration = Math.random() * 3 + 2;
-                
-                confetti.style.width = `${size}px`;
-                confetti.style.height = `${size}px`;
-                confetti.style.backgroundColor = color;
-                confetti.style.left = `${left}%`;
-                confetti.style.animationDuration = `${animationDuration}s`;
-                
-                document.body.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, animationDuration * 1000);
-            }
+            document.getElementById('dataInput').disabled = true;
         }
     </script>
 </body>
