@@ -1,187 +1,137 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prediksi Multi Platform</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>55 & 62 Colour</title>
   <style>
-    /* Gaya Umum */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      color: white;
-      margin: 0;
-      padding: 20px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    .header h1 {
-      color: #ffcc00;
-      margin-bottom: 5px;
-      font-size: 2rem;
-    }
-    
-    /* Grid Tombol Platform */
-    .platform-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    
-    /* Tombol Bulat */
-    .platform-btn {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      background: #000;
       overflow: hidden;
+      text-align: center;
+      padding: 2rem;
+      color: #f1f1f1;
       position: relative;
-      border: 3px solid;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      background-size: cover;
-      background-position: center;
+      z-index: 1;
     }
-    
-    /* Efek Hover */
-    .platform-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    .leaves {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
     }
-    
-    /* Warna Border untuk Setiap Platform */
-    .btn-55five { border-color: #ffffff; }
-    .btn-62Club { border-color: #000000; }
-    .btn-Didihub { border-color: #000000; }
-    .btn-24Club { border-color: #ffffff; }
-    
-    /* Label Platform */
-    .platform-label {
+    .leaf {
       position: absolute;
-      bottom: -25px;
-      width: 100%;
+      font-size: 1.5rem;
+      animation: fall linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes fall {
+      0% {
+        transform: translateY(-10%) rotate(0deg);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 1;
+      }
+    }
+    h2 {
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    input[type="text"] {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      width: 80%;
+      max-width: 300px;
+      border: 2px solid #f1f1f1;
+      border-radius: 10px;
       text-align: center;
-      font-weight: bold;
-      font-size: 16px;
+      margin-bottom: 1rem;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    button.predict {
+      background: #22a6b3;
       color: white;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+      transition: background 0.3s;
+      width: 80%;
+      max-width: 300px;
+      position: relative;
+      z-index: 2;
     }
-    
-    /* Halaman Prediksi (tersembunyi awal) */
-    .prediction-page {
-      display: none;
-      width: 100%;
-      max-width: 500px;
-      margin-top: 30px;
-      border-radius: 15px;
-      overflow: hidden;
+    button.predict:hover {
+      background: #0984e3;
     }
-    
-    /* Background untuk masing-masing platform */
-    .prediction-content-55five {
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                  url('1000009900.png');
-      background-size: cover;
-      padding: 20px;
-      border: 2px solid #ffffff;
+    .result {
+      font-size: 1.4rem;
+      font-weight: bold;
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 2;
     }
-    
-    .prediction-content-62Club {
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                  url('1000006221.png');
-      background-size: cover;
-      padding: 20px;
-      border: 2px solid #000000;
+    .k3 {
+      color: #00ff99;
+      font-weight: bold;
     }
-    
-    .prediction-content-Didihub {
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                  url('1000007266.png');
-      background-size: cover;
-      padding: 20px;
-      border: 2px solid #000000;
+    .btn-group {
+      margin-top: 2rem;
+      position: relative;
+      z-index: 2;
     }
-    
-    .prediction-content-24Club {
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                  url('10000062736.png');
-      background-size: cover;
-      padding: 20px;
-      border: 2px solid #ffffff;
+    .btn-group a {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: all 0.3s;
     }
-    
-    /* Media Query untuk Mobile */
-    @media (max-width: 600px) {
-      .platform-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .platform-btn {
-        width: 140px;
-        height: 140px;
-      }
-    }
+    .daftar { background: #6ab04c; }
+    .daftar:hover { background: #44bd32; }
+    .wa { background: #25D366; }
+    .wa:hover { background: #1abc9c; }
+    .tg { background: #2980b9; }
+    .tg:hover { background: #2471a3; }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>PILIH PLATFORM PREDIKSI WINGO</h1>
-    <p>By : Bang Ichal</p>
-  </div>
-  
-  <div class="platform-grid">
-    <!-- Tombol 55five -->
-    <div class="platform-btn btn-55five" 
-         style="background-image: url('1000009900.png')"
-         onclick="selectPlatform('55five')">
-      <div class="platform-label">55FIVE</div>
-    </div>
-    
-    <!-- Tombol 62Club -->
-    <div class="platform-btn btn-62Club" 
-         style="background-image: url('1000006221.png')"
-         onclick="selectPlatform('62Club')">
-      <div class="platform-label">62CLUB</div>
-    </div>
-    
-    <!-- Tombol Didihub -->
-    <div class="platform-btn btn-Didihub" 
-         style="background-image: url('1000007266.png')"
-         onclick="selectPlatform('Didihub')">
-      <div class="platform-label">DIDIHUB</div>
-    </div>
-    
-    <!-- Tombol 24Club -->
-    <div class="platform-btn btn-24Club" 
-         style="background-image: url('10000062736.png')"
-         onclick="selectPlatform('24Club')">
-      <div class="platform-label">24CLUB</div>
-    </div>
-  </div>
-  
-  <!-- Halaman Prediksi (akan diisi oleh JavaScript) -->
-  <div id="predictionPage" class="prediction-page">
-    <!-- Konten prediksi akan dimuat di sini -->
+  <div class="leaves" id="leaves"></div>
+  <h2>🍃 WinGo CoLouR</h2>
+
+  <input type="text" id="angkaInput" maxlength="4" placeholder="" />
+  <br />
+  <button class="predict" onclick="predict()">🔮 Prediksi Sekarang</button>
+  <div class="result" id="output"></div>
+
+  <div class="btn-group">
+    <a href="https://55d8krb.com/#/register?invitationCode=618741674553" class="daftar">📝 Daftar Sekarang</a>
+    <a href="https://wa.me/6282267722152" target="_blank" class="wa">📱 WhatsApp</a>
+    <a href="https://t.me/ichal025" target="_blank" class="tg">💬 Telegram</a>
   </div>
 
   <script>
     // MASA AKTIF
-  const batasAktif = new Date("2025-06-14T23:00");
+  const batasAktif = new Date("2025-06-20");
   window.onload = function () {
     const hariIni = new Date();
     if (hariIni > batasAktif) {
@@ -194,139 +144,85 @@
   };
 
   // Fungsi lainnya...
-    // Fungsi untuk memilih platform
-    function selectPlatform(platform) {
-      // Sembunyikan tombol platform
-      document.querySelector('.platform-grid').style.display = 'none';
-      document.querySelector('.header').style.display = 'none';
-      
-      // Tampilkan halaman prediksi
-      const predictionPage = document.getElementById('predictionPage');
-      predictionPage.style.display = 'block';
-      
-      // Set konten halaman prediksi berdasarkan platform
-      predictionPage.innerHTML = `
-        <div class="prediction-content-${platform}">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="color: #ffcc00; margin: 0;">PREDIKSI ${platform.toUpperCase()} K3</h2>
-            <button onclick="backToPlatforms()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">×</button>
-          </div>
-          
-          <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; color: #aaa;">Masukkan 4 hasil akhir</label>
-            <input type="text" id="inputAngka" maxlength="4" placeholder="Contoh: 1234" 
-                   style="width: 100%; padding: 12px; border-radius: 5px; border: 1px solid #444; background-color: rgba(255,255,255,0.9);">
-          </div>
-          
-          <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button onclick="startPrediction('${platform}')" 
-                    style="flex: 1; padding: 12px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-              START
-            </button>
-            <button onclick="resetForm()" 
-                    style="flex: 1; padding: 12px; background-color: #f44336; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-              RESET
-            </button>
-          </div>
-          
-          <div id="hasilPrediksi" style="margin-top: 20px; font-weight: bold; font-size: 24px; text-align: center; padding: 15px; 
-               border-radius: 5px; background-color: rgba(0,0,0,0.5); color: #ffcc00; animation: float 3s ease-in-out infinite;">
-          </div>
-          
-          <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-            <button onclick="window.open('https://wa.me/6282267722152')" 
-                    style="padding: 10px 15px; background-color: #25D366; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-              WHATSAPP
-            </button>
-            <button onclick="donate()" 
-                    style="padding: 10px 15px; background-color: #FF9800; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-              SAWER
-            </button>
-            <button onclick="window.open('https://winbig.shop/register?invitationCode=015231331314')" 
-                    style="padding: 10px 15px; background-color: #2196F3; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-              DAFTAR
-            </button>
-          </div>
-        </div>
-        
-        <style>
-          @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-          }
-        </style>
-      `;
+    for (let i = 0; i < 30; i++) {
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      leaf.innerText = ' 🍁';
+      leaf.style.left = Math.random() * 100 + 'vw';
+      leaf.style.animationDuration = (3 + Math.random() * 5) + 's';
+      leaf.style.animationDelay = (Math.random() * 5) + 's';
+      document.getElementById('leaves').appendChild(leaf);
     }
-    
-    // Fungsi untuk kembali ke halaman platform
-    function backToPlatforms() {
-      document.querySelector('.platform-grid').style.display = 'grid';
-      document.querySelector('.header').style.display = 'block';
-      document.getElementById('predictionPage').style.display = 'none';
-      resetForm();
-    }
-    
-    // Fungsi reset form
-    function resetForm() {
-      const input = document.getElementById('inputAngka');
-      if (input) input.value = '';
-      const hasil = document.getElementById('hasilPrediksi');
-      if (hasil) hasil.innerText = '';
-    }
-    
-    // Fungsi prediksi
-    function startPrediction(platform) {
-      const input = document.getElementById("inputAngka").value.trim();
-      const output = document.getElementById("hasilPrediksi");
 
-      if (!/^[0-9]{4}$/.test(input)) {
-        output.innerText = "Input harus 4 angka!";
+    function toColor(n) {
+      return n % 2 === 1 ? "🟢" : "🔴";
+    }
+
+    function metodeM2(nums) {
+      let mean = Math.round(nums.reduce((a,b) => a + b, 0) / nums.length);
+      return toColor(mean % 10);
+    }
+
+    function metodeM4(nums) {
+      let s1 = nums[1] - nums[0];
+      let s2 = nums[2] - nums[1];
+      let s3 = nums[3] - nums[2];
+      let pred = s3 - (s2 - s1);
+      let value = (nums[3] + pred + 10) % 10;
+      return toColor(value);
+    }
+
+    function metodeM6(nums) {
+      let counts = Array(10).fill(0);
+      nums.forEach(n => counts[n]++);
+      let maxVal = counts.indexOf(Math.max(...counts));
+      return toColor(maxVal);
+    }
+
+    function isZigzag(nums) {
+      let diffs = [];
+      for (let i = 1; i < nums.length; i++) {
+        diffs.push(nums[i] - nums[i - 1]);
+      }
+      return diffs.length === 3 && diffs[0] * diffs[1] < 0 && diffs[1] * diffs[2] < 0;
+    }
+
+    function predict() {
+      const input = document.getElementById("angkaInput").value.trim();
+      const angka = input.split("").map(Number);
+
+      if (angka.length !== 4 || angka.some(isNaN)) {
+        document.getElementById("output").innerText = "Masukkan 4 angka valid (0-9).";
         return;
       }
 
-      const angka = input.split('').map(Number);
-      const p1 = metode1(angka);
-      const p2 = metode2(angka);
-      const p3 = metode3(angka);
+      let zigzagValid = isZigzag(angka);
 
-      const suara = [p1, p2, p3];
-      const besar = suara.filter(p => p === "BESAR").length;
-      const kecil = suara.filter(p => p === "KECIL").length;
+      let m2 = metodeM2(angka);
+      let m4 = metodeM4(angka);
+      let m6 = metodeM6(angka);
 
-      if (besar >= 2) {
-        output.innerText = "BESAR";
-      } else if (kecil >= 2) {
-        output.innerText = "KECIL";
+      let votes = { "🟢": 0, "🔴": 0 };
+      votes[m2]++;
+      votes[m4]++;
+      votes[m6]++;
+
+      let finalColor = votes["🟢"] >= 2 ? "🟢" : votes["🔴"] >= 2 ? "🔴" : null;
+      let confidence = votes["🟢"] === 3 || votes["🔴"] === 3 ? "90%" : "65%";
+
+      let result = "";
+
+      if (finalColor) {
+        result += `Prediksi Warna: <span style="font-size:2rem">${finalColor}</span><br>(Confidence: ${confidence})`;
+        if (zigzagValid) {
+          result += `<br><span class='k3'>💰 Cocok untuk kompensasi Max K³ (zigzag konsisten)</span>`;
+        }
       } else {
-        output.innerText = "- (Tidak jelas)";
+        result = `Prediksi tidak dilakukan (Voting tidak sepakat)`;
       }
-    }
-    
-    // Fungsi donasi
-    function donate() {
-      alert('Terima kasih atas dukungan Anda!\n\nRekening Donasi:\nDANA: 082267722152\nCHAIRUL ICHSAN: Prediksi K3');
-    }
 
-    // Metode Prediksi
-    function metode1(arr) {
-      const sorted = [...arr].sort((a, b) => a - b);
-      const median = (sorted[1] + sorted[2]) / 2;
-      const koreksi = arr[3] - arr[2];
-      const hasil = Math.round(median + koreksi / 2);
-      return hasil >= 5 ? "BESAR" : "KECIL";
-    }
-
-    function metode2(arr) {
-      const rata = (arr[0] + arr[1] + arr[2] + arr[3]) / 4;
-      const delta = (arr[3] - arr[2] + arr[2] - arr[1]) / 2;
-      const hasil = Math.round(rata + delta / 3);
-      return hasil >= 5 ? "BESAR" : "KECIL";
-    }
-
-    function metode3(arr) {
-      const sum = arr[1] + arr[2];
-      return sum % 2 === 0 ? "BESAR" : "KECIL";
+      document.getElementById("output").innerHTML = result;
+      document.getElementById("angkaInput").value = "";
     }
   </script>
 </body>
